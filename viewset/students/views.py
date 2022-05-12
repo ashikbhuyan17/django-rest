@@ -6,14 +6,16 @@ from .models import Students
 from .serializers import StudentSerializrer
 from rest_framework import status
 from rest_framework import viewsets
-
-from students import serializers
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 class StudentViewSet(viewsets.ViewSet):
     def list(self,request):
         stu = Students.objects.all()
         serialize = StudentSerializrer(stu,many=True)
         return Response(serialize.data)
+    # authentication_classes = [BaseAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
     def retrieve(self, request, pk=None):
@@ -49,3 +51,6 @@ class StudentViewSet(viewsets.ViewSet):
         queryset.delete()
         return Response({'msg':'delete success'})
         
+
+    authentication_classes = [BaseAuthentication]
+    permission_classes = [IsAuthenticated]        
