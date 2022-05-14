@@ -13,7 +13,7 @@ class BooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BookList
         fields = '__all__'
-        depth = 1
+        # depth = 1
         # exclude = ['price']
 
 
