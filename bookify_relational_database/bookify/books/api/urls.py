@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:pk>',views.BookDetailsView.as_view(),name='book-details'),
     path('platform',views.SellingPlatformList.as_view(),name='platform-list'),
     path('platform/<int:pk>',views.SellingPlatformDetailsView.as_view(),name='platform-details'),
+    path('review/',views.ReviewList.as_view(),name='review-list'),
 
 ]

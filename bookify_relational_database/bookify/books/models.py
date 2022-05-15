@@ -32,3 +32,14 @@ class BookList(TimeStamppedModel):
 
     def __str__(self):
         return self.title
+
+
+class Review(TimeStamppedModel):
+    star = models.IntegerField(default=0)
+    comment = models.TextField()
+    booklist = models.ForeignKey(BookList,on_delete=models.CASCADE,related_name='reviews')
+
+    def __str__(self):
+        return self.comment
+
+

@@ -1,11 +1,11 @@
 from platform import platform
 from re import S
-from books.api.serializers import BooksSerializer,SellingPlatformSerializer
+from books.api.serializers import BooksSerializer, ReviewSerializer,SellingPlatformSerializer
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
-
+from rest_framework import generics
 from books import models
 
 class BookList(APIView):
@@ -30,15 +30,16 @@ class BookDetailsView(APIView):
 
     def get(self,request,pk):
         try:
-            book = models.Books.objects.get(pk=pk)
-        except models.Books.DoesNotExist:
+            book = models.BookList.objects.get(pk=pk)
+            print("...............",book)
+        except models.BookList.DoesNotExist:
             return Response({'error':'object not found !!'},
             status=status.HTTP_404_NOT_FOUND)
         serializer = BooksSerializer(book)
         return Response(serializer.data)
     
     def put(self,request,pk):
-        book = models.Books.objects.get(pk=pk)
+        book = models.BookList.objects.get(pk=pk)
         serializer = BooksSerializer(book,data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -46,7 +47,7 @@ class BookDetailsView(APIView):
         return Response(serializer.errors)
 
     def delete(self,request,pk):
-        book = models.Books.objects.get(pk=pk)
+        book = models.BookList.objects.get(pk=pk)
         book.delete()
         return Response({'message':f'{pk} -- deleted !!'},status=status.HTTP_204_NO_CONTENT)
 
@@ -88,6 +89,14 @@ class SellingPlatformDetailsView(APIView):
         platform = models.SellingPlatform.objects.get(pk=pk)
         platform.delete()
         return Response({'message':f'{pk} -- deleted !!'},status=status.HTTP_204_NO_CONTENT)
+
+
+
+class ReviewList(generics.ListCreateAPIView):
+    queryset = models.Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
 
 
 
